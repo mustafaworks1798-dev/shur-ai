@@ -13,6 +13,7 @@
             <input type="text" id="question" placeholder="اكتب سؤالك هنا..." autocomplete="off">
             <button id="sendBtn">إرسال</button>
         </div>
+
         <div id="response" class="response">
             <div id="loading" class="loading hidden">
                 <div class="spinner"></div>
@@ -26,32 +27,32 @@
     <script>
         const sendBtn = document.getElementById('sendBtn');
         const questionInput = document.getElementById('question');
-        const responseDiv = document.getElementById('response');
         const loadingDiv = document.getElementById('loading');
         const answerDiv = document.getElementById('answer');
+
+        function showAnswer(answer) {
+            answerDiv.innerHTML = formatResponseText(answer);
+        }
 
         sendBtn.addEventListener('click', async () => {
             const question = questionInput.value.trim();
             if (!question) return;
 
-            // إظهار التحميل
             loadingDiv.classList.remove('hidden');
             answerDiv.textContent = '';
             sendBtn.disabled = true;
 
             try {
                 const answer = await text(question);
-                answerDiv.textContent = answer;
+                showAnswer(answer);
             } catch (error) {
-                answerDiv.textContent = 'حدث خطأ: ' + error.message;
+                showAnswer('حدث خطأ: ' + error.message);
             } finally {
-                // إخفاء التحميل
                 loadingDiv.classList.add('hidden');
                 sendBtn.disabled = false;
             }
         });
 
-        // السماح بالإرسال بالضغط على Enter
         questionInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 sendBtn.click();
