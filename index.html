@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>مساعد AI الشعري</h1>
+        <div class="chat-box">
+            <input type="text" id="question" placeholder="اكتب سؤالك هنا..." autocomplete="off">
+            <button id="sendBtn">إرسال</button>
+        </div>
+        <div id="response" class="response">
+            <div id="loading" class="loading hidden">
+                <div class="spinner"></div>
+                جاري التحميل...
+            </div>
+            <div id="answer"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        const sendBtn = document.getElementById('sendBtn');
+        const questionInput = document.getElementById('question');
+        const responseDiv = document.getElementById('response');
+        const loadingDiv = document.getElementById('loading');
+        const answerDiv = document.getElementById('answer');
+
+        sendBtn.addEventListener('click', async () => {
+            const question = questionInput.value.trim();
+            if (!question) return;
+
+            // إظهار التحميل
+            loadingDiv.classList.remove('hidden');
+            answerDiv.textContent = '';
+            sendBtn.disabled = true;
+
+            try {
+                const answer = await text(question);
+                answerDiv.textContent = answer;
+            } catch (error) {
+                answerDiv.textContent = 'حدث خطأ: ' + error.message;
+            } finally {
+                // إخفاء التحميل
+                loadingDiv.classList.add('hidden');
+                sendBtn.disabled = false;
+            }
+        });
+
+        // السماح بالإرسال بالضغط على Enter
+        questionInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>
