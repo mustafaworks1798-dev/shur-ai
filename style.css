@@ -205,8 +205,8 @@ h1 {
         font-size: 0.95rem;
         border-radius: 40px;
         width: 100%;
-        min-height: 40px;
-        max-height: 44px;
+        min-height: 10px;
+        max-height: 15px;
         line-height: 1.2;
     }
 
